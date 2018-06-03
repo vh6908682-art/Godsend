@@ -21,6 +21,18 @@ namespace Godsend.Migrations
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Godsend.Models.Location", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location");
+                });
+
             modelBuilder.Entity("Godsend.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -155,6 +167,8 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid?>("LocationId");
+
                     b.Property<string>("Name");
 
                     b.Property<double>("Rating");
@@ -162,6 +176,8 @@ namespace Godsend.Migrations
                     b.Property<int>("Watches");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("SupplierInformation");
                 });
@@ -414,6 +430,13 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.SupplierInformation", "Info")
                         .WithMany()
                         .HasForeignKey("InfoId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.SupplierInformation", b =>
+                {
+                    b.HasOne("Godsend.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

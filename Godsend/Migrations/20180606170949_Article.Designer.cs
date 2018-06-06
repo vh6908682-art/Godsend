@@ -226,7 +226,7 @@ namespace Godsend.Migrations
                     b.ToTable("SupplierInformation");
                 });
 
-            modelBuilder.Entity("Godsend.Models.Wrapper<string>", b =>
+            modelBuilder.Entity("Godsend.Models.StringWrapper<string>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -239,7 +239,7 @@ namespace Godsend.Migrations
 
                     b.HasIndex("ArticleInformationId");
 
-                    b.ToTable("Wrapper<string>");
+                    b.ToTable("StringWrapper<string>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -523,7 +523,7 @@ namespace Godsend.Migrations
                         .HasForeignKey("LocationId");
                 });
 
-            modelBuilder.Entity("Godsend.Models.Wrapper<string>", b =>
+            modelBuilder.Entity("Godsend.Models.StringWrapper<string>", b =>
                 {
                     b.HasOne("Godsend.Models.ArticleInformation")
                         .WithMany("EFTags")

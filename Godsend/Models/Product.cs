@@ -9,7 +9,7 @@
     {
         public Guid Id { get; set; }
 
-        public ProductInformation Info { get; set;}
+        public ProductInformation Info { get; set; }
     }
 
     public class DiscreteProduct : Product

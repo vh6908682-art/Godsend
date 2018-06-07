@@ -74,9 +74,9 @@ namespace Godsend.Migrations
 
                     b.Property<decimal>("Price");
 
-                    b.Property<Guid?>("ProductId");
+                    b.Property<Guid>("ProductId");
 
-                    b.Property<Guid?>("SupplierId");
+                    b.Property<Guid>("SupplierId");
 
                     b.HasKey("Id");
 
@@ -497,11 +497,13 @@ namespace Godsend.Migrations
                 {
                     b.HasOne("Godsend.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Godsend.Models.Supplier", "Supplier")
                         .WithMany()
-                        .HasForeignKey("SupplierId");
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Godsend.Models.Order", b =>

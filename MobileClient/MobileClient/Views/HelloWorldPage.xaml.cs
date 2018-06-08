@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace MobileClient.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class View1 : ContentView
-	{
-		public View1 ()
+	public partial class HelloWorldPage : ContentPage
+    {
+		public HelloWorldPage()
 		{
 			InitializeComponent ();
 		}

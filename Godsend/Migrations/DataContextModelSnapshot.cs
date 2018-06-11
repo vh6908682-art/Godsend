@@ -46,6 +46,52 @@ namespace Godsend.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Article");
                 });
 
+            modelBuilder.Entity("Godsend.Models.Column", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("DirectoryId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DirectoryId");
+
+                    b.ToTable("Column");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Data", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CellId");
+
+                    b.Property<int?>("ColumnId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CellId");
+
+                    b.HasIndex("ColumnId");
+
+                    b.ToTable("Data");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Directory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("BaseId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseId");
+
+                    b.ToTable("DirList");
+                });
+
             modelBuilder.Entity("Godsend.Models.Information", b =>
                 {
                     b.Property<Guid>("Id")
@@ -491,6 +537,31 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.ArticleInformation", "Info")
                         .WithMany()
                         .HasForeignKey("InfoId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Column", b =>
+                {
+                    b.HasOne("Godsend.Models.Directory")
+                        .WithMany("Columns")
+                        .HasForeignKey("DirectoryId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Data", b =>
+                {
+                    b.HasOne("Godsend.Models.Data", "Cell")
+                        .WithMany()
+                        .HasForeignKey("CellId");
+
+                    b.HasOne("Godsend.Models.Column")
+                        .WithMany("Cells")
+                        .HasForeignKey("ColumnId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Directory", b =>
+                {
+                    b.HasOne("Godsend.Models.Directory", "Base")
+                        .WithMany()
+                        .HasForeignKey("BaseId");
                 });
 
             modelBuilder.Entity("Godsend.Models.LinkProductsSuppliers", b =>

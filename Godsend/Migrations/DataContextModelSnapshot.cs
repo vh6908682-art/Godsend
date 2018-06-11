@@ -51,38 +51,13 @@ namespace Godsend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("DirectoryId");
+                    b.Property<int?>("BaseClassId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DirectoryId");
+                    b.HasIndex("BaseClassId");
 
                     b.ToTable("Column");
-                });
-
-            modelBuilder.Entity("Godsend.Models.Data", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("ColumnId");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<int?>("RealDataId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ColumnId");
-
-                    b.HasIndex("RealDataId")
-                        .IsUnique()
-                        .HasFilter("[RealDataId] IS NOT NULL");
-
-                    b.ToTable("Data");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Data");
                 });
 
             modelBuilder.Entity("Godsend.Models.Directory", b =>
@@ -92,11 +67,13 @@ namespace Godsend.Migrations
 
                     b.Property<int?>("BaseId");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BaseId");
 
-                    b.ToTable("DirList");
+                    b.ToTable("Directory");
                 });
 
             modelBuilder.Entity("Godsend.Models.Information", b =>
@@ -246,6 +223,31 @@ namespace Godsend.Migrations
                     b.ToTable("Products");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
+                });
+
+            modelBuilder.Entity("Godsend.Models.RealData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("BaseColumnId");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<int?>("ValueId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseColumnId");
+
+                    b.HasIndex("ValueId")
+                        .IsUnique()
+                        .HasFilter("[ValueId] IS NOT NULL");
+
+                    b.ToTable("AllData");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("RealData");
                 });
 
             modelBuilder.Entity("Godsend.Models.StringWrapper", b =>
@@ -456,16 +458,6 @@ namespace Godsend.Migrations
                     b.HasDiscriminator().HasValue("SimpleArticle");
                 });
 
-            modelBuilder.Entity("Godsend.Models.PrimitiveData", b =>
-                {
-                    b.HasBaseType("Godsend.Models.Data");
-
-
-                    b.ToTable("PrimitiveData");
-
-                    b.HasDiscriminator().HasValue("PrimitiveData");
-                });
-
             modelBuilder.Entity("Godsend.Models.ArticleInformation", b =>
                 {
                     b.HasBaseType("Godsend.Models.Information");
@@ -535,6 +527,17 @@ namespace Godsend.Migrations
                     b.HasDiscriminator().HasValue("WeightedProduct");
                 });
 
+            modelBuilder.Entity("Godsend.Models.PrimitiveData", b =>
+                {
+                    b.HasBaseType("Godsend.Models.RealData");
+
+                    b.Property<string>("RealData");
+
+                    b.ToTable("PrimitiveData");
+
+                    b.HasDiscriminator().HasValue("PrimitiveData");
+                });
+
             modelBuilder.Entity("Godsend.Models.SimpleSupplier", b =>
                 {
                     b.HasBaseType("Godsend.Models.Supplier");
@@ -558,20 +561,9 @@ namespace Godsend.Migrations
 
             modelBuilder.Entity("Godsend.Models.Column", b =>
                 {
-                    b.HasOne("Godsend.Models.Directory")
-                        .WithMany("Columns")
-                        .HasForeignKey("DirectoryId");
-                });
-
-            modelBuilder.Entity("Godsend.Models.Data", b =>
-                {
-                    b.HasOne("Godsend.Models.Column")
-                        .WithMany("Cells")
-                        .HasForeignKey("ColumnId");
-
-                    b.HasOne("Godsend.Models.PrimitiveData", "RealData")
-                        .WithOne("Cell")
-                        .HasForeignKey("Godsend.Models.Data", "RealDataId");
+                    b.HasOne("Godsend.Models.Directory", "BaseClass")
+                        .WithMany()
+                        .HasForeignKey("BaseClassId");
                 });
 
             modelBuilder.Entity("Godsend.Models.Directory", b =>
@@ -644,6 +636,17 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.ProductInformation", "Info")
                         .WithMany()
                         .HasForeignKey("InfoId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.RealData", b =>
+                {
+                    b.HasOne("Godsend.Models.Column", "BaseColumn")
+                        .WithMany()
+                        .HasForeignKey("BaseColumnId");
+
+                    b.HasOne("Godsend.Models.PrimitiveData", "Value")
+                        .WithOne("Cell")
+                        .HasForeignKey("Godsend.Models.RealData", "ValueId");
                 });
 
             modelBuilder.Entity("Godsend.Models.StringWrapper", b =>

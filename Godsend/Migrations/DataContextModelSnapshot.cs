@@ -65,17 +65,24 @@ namespace Godsend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CellId");
-
                     b.Property<int?>("ColumnId");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<int?>("RealDataId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CellId");
-
                     b.HasIndex("ColumnId");
 
+                    b.HasIndex("RealDataId")
+                        .IsUnique()
+                        .HasFilter("[RealDataId] IS NOT NULL");
+
                     b.ToTable("Data");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Data");
                 });
 
             modelBuilder.Entity("Godsend.Models.Directory", b =>
@@ -449,6 +456,16 @@ namespace Godsend.Migrations
                     b.HasDiscriminator().HasValue("SimpleArticle");
                 });
 
+            modelBuilder.Entity("Godsend.Models.PrimitiveData", b =>
+                {
+                    b.HasBaseType("Godsend.Models.Data");
+
+
+                    b.ToTable("PrimitiveData");
+
+                    b.HasDiscriminator().HasValue("PrimitiveData");
+                });
+
             modelBuilder.Entity("Godsend.Models.ArticleInformation", b =>
                 {
                     b.HasBaseType("Godsend.Models.Information");
@@ -548,13 +565,13 @@ namespace Godsend.Migrations
 
             modelBuilder.Entity("Godsend.Models.Data", b =>
                 {
-                    b.HasOne("Godsend.Models.Data", "Cell")
-                        .WithMany()
-                        .HasForeignKey("CellId");
-
                     b.HasOne("Godsend.Models.Column")
                         .WithMany("Cells")
                         .HasForeignKey("ColumnId");
+
+                    b.HasOne("Godsend.Models.PrimitiveData", "RealData")
+                        .WithOne("Cell")
+                        .HasForeignKey("Godsend.Models.Data", "RealDataId");
                 });
 
             modelBuilder.Entity("Godsend.Models.Directory", b =>

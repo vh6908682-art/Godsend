@@ -53,6 +53,10 @@ namespace Godsend.Migrations
 
                     b.Property<int?>("BaseClassId");
 
+                    b.Property<string>("ColumnType");
+
+                    b.Property<string>("Name");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BaseClassId");
@@ -232,6 +236,8 @@ namespace Godsend.Migrations
 
                     b.Property<int?>("BaseColumnId");
 
+                    b.Property<int?>("DirId");
+
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
@@ -241,9 +247,9 @@ namespace Godsend.Migrations
 
                     b.HasIndex("BaseColumnId");
 
-                    b.HasIndex("ValueId")
-                        .IsUnique()
-                        .HasFilter("[ValueId] IS NOT NULL");
+                    b.HasIndex("DirId");
+
+                    b.HasIndex("ValueId");
 
                     b.ToTable("AllData");
 
@@ -644,9 +650,13 @@ namespace Godsend.Migrations
                         .WithMany()
                         .HasForeignKey("BaseColumnId");
 
+                    b.HasOne("Godsend.Models.Directory", "Dir")
+                        .WithMany()
+                        .HasForeignKey("DirId");
+
                     b.HasOne("Godsend.Models.PrimitiveData", "Value")
-                        .WithOne("Cell")
-                        .HasForeignKey("Godsend.Models.RealData", "ValueId");
+                        .WithMany()
+                        .HasForeignKey("ValueId");
                 });
 
             modelBuilder.Entity("Godsend.Models.StringWrapper", b =>

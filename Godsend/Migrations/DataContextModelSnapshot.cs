@@ -46,6 +46,33 @@ namespace Godsend.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Article");
                 });
 
+            modelBuilder.Entity("Godsend.Models.Cell", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("BaseColumnId");
+
+                    b.Property<int?>("DirId");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<int?>("ValueId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseColumnId");
+
+                    b.HasIndex("DirId");
+
+                    b.HasIndex("ValueId");
+
+                    b.ToTable("Values");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Cell");
+                });
+
             modelBuilder.Entity("Godsend.Models.Column", b =>
                 {
                     b.Property<int>("Id")
@@ -158,10 +185,12 @@ namespace Godsend.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Order");
                 });
 
-            modelBuilder.Entity("Godsend.Models.OrderPartDiscrete", b =>
+            modelBuilder.Entity("Godsend.Models.OrderPartProducts", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Multiplier");
 
                     b.Property<Guid?>("OrderId");
 
@@ -179,31 +208,7 @@ namespace Godsend.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("OrderPartDiscrete");
-                });
-
-            modelBuilder.Entity("Godsend.Models.OrderPartWeighted", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("OrderId");
-
-                    b.Property<Guid>("ProductId");
-
-                    b.Property<Guid>("SupplierId");
-
-                    b.Property<double>("Weight");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("SupplierId");
-
-                    b.ToTable("OrderPartWeighted");
+                    b.ToTable("OrderPartProducts");
                 });
 
             modelBuilder.Entity("Godsend.Models.Product", b =>
@@ -227,33 +232,6 @@ namespace Godsend.Migrations
                     b.ToTable("Products");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
-                });
-
-            modelBuilder.Entity("Godsend.Models.RealData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("BaseColumnId");
-
-                    b.Property<int?>("DirId");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<int?>("ValueId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BaseColumnId");
-
-                    b.HasIndex("DirId");
-
-                    b.HasIndex("ValueId");
-
-                    b.ToTable("AllData");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("RealData");
                 });
 
             modelBuilder.Entity("Godsend.Models.StringWrapper", b =>
@@ -464,6 +442,17 @@ namespace Godsend.Migrations
                     b.HasDiscriminator().HasValue("SimpleArticle");
                 });
 
+            modelBuilder.Entity("Godsend.Models.PrimitiveData", b =>
+                {
+                    b.HasBaseType("Godsend.Models.Cell");
+
+                    b.Property<string>("RealData");
+
+                    b.ToTable("PrimitiveData");
+
+                    b.HasDiscriminator().HasValue("PrimitiveData");
+                });
+
             modelBuilder.Entity("Godsend.Models.ArticleInformation", b =>
                 {
                     b.HasBaseType("Godsend.Models.Information");
@@ -513,35 +502,14 @@ namespace Godsend.Migrations
                     b.HasDiscriminator().HasValue("SimpleOrder");
                 });
 
-            modelBuilder.Entity("Godsend.Models.DiscreteProduct", b =>
+            modelBuilder.Entity("Godsend.Models.SimpleProduct", b =>
                 {
                     b.HasBaseType("Godsend.Models.Product");
 
 
-                    b.ToTable("DiscreteProduct");
+                    b.ToTable("SimpleProduct");
 
-                    b.HasDiscriminator().HasValue("DiscreteProduct");
-                });
-
-            modelBuilder.Entity("Godsend.Models.WeightedProduct", b =>
-                {
-                    b.HasBaseType("Godsend.Models.Product");
-
-
-                    b.ToTable("WeightedProduct");
-
-                    b.HasDiscriminator().HasValue("WeightedProduct");
-                });
-
-            modelBuilder.Entity("Godsend.Models.PrimitiveData", b =>
-                {
-                    b.HasBaseType("Godsend.Models.RealData");
-
-                    b.Property<string>("RealData");
-
-                    b.ToTable("PrimitiveData");
-
-                    b.HasDiscriminator().HasValue("PrimitiveData");
+                    b.HasDiscriminator().HasValue("SimpleProduct");
                 });
 
             modelBuilder.Entity("Godsend.Models.SimpleSupplier", b =>
@@ -563,6 +531,21 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.ArticleInformation", "Info")
                         .WithMany()
                         .HasForeignKey("InfoId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Cell", b =>
+                {
+                    b.HasOne("Godsend.Models.Column", "BaseColumn")
+                        .WithMany()
+                        .HasForeignKey("BaseColumnId");
+
+                    b.HasOne("Godsend.Models.Directory", "Dir")
+                        .WithMany()
+                        .HasForeignKey("DirId");
+
+                    b.HasOne("Godsend.Models.PrimitiveData", "Value")
+                        .WithMany()
+                        .HasForeignKey("ValueId");
                 });
 
             modelBuilder.Entity("Godsend.Models.Column", b =>
@@ -599,27 +582,10 @@ namespace Godsend.Migrations
                         .HasForeignKey("EFCustomerId");
                 });
 
-            modelBuilder.Entity("Godsend.Models.OrderPartDiscrete", b =>
+            modelBuilder.Entity("Godsend.Models.OrderPartProducts", b =>
                 {
                     b.HasOne("Godsend.Models.Order")
-                        .WithMany("DiscreteItems")
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("Godsend.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Godsend.Models.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Godsend.Models.OrderPartWeighted", b =>
-                {
-                    b.HasOne("Godsend.Models.Order")
-                        .WithMany("WeightedItems")
+                        .WithMany("Items")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("Godsend.Models.Product", "Product")
@@ -642,21 +608,6 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.ProductInformation", "Info")
                         .WithMany()
                         .HasForeignKey("InfoId");
-                });
-
-            modelBuilder.Entity("Godsend.Models.RealData", b =>
-                {
-                    b.HasOne("Godsend.Models.Column", "BaseColumn")
-                        .WithMany()
-                        .HasForeignKey("BaseColumnId");
-
-                    b.HasOne("Godsend.Models.Directory", "Dir")
-                        .WithMany()
-                        .HasForeignKey("DirId");
-
-                    b.HasOne("Godsend.Models.PrimitiveData", "Value")
-                        .WithMany()
-                        .HasForeignKey("ValueId");
                 });
 
             modelBuilder.Entity("Godsend.Models.StringWrapper", b =>

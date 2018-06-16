@@ -107,6 +107,18 @@ namespace Godsend.Migrations
                     b.ToTable("Directory");
                 });
 
+            modelBuilder.Entity("Godsend.Models.ImagePaths", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Preview");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ImagePathsTable");
+                });
+
             modelBuilder.Entity("Godsend.Models.Information", b =>
                 {
                     b.Property<Guid>("Id")
@@ -241,11 +253,15 @@ namespace Godsend.Migrations
 
                     b.Property<Guid?>("ArticleInformationId");
 
+                    b.Property<Guid?>("ImagePathsId");
+
                     b.Property<string>("Value");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleInformationId");
+
+                    b.HasIndex("ImagePathsId");
 
                     b.ToTable("StringWrapper");
                 });
@@ -615,6 +631,10 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.ArticleInformation")
                         .WithMany("EFTags")
                         .HasForeignKey("ArticleInformationId");
+
+                    b.HasOne("Godsend.Models.ImagePaths")
+                        .WithMany("Images")
+                        .HasForeignKey("ImagePathsId");
                 });
 
             modelBuilder.Entity("Godsend.Models.Supplier", b =>

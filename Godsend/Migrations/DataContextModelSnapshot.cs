@@ -522,6 +522,26 @@ namespace Godsend.Migrations
                     b.HasDiscriminator().HasValue("SimpleOrder");
                 });
 
+            modelBuilder.Entity("Godsend.Models.ProductFruit", b =>
+                {
+                    b.HasBaseType("Godsend.Models.Product");
+
+
+                    b.ToTable("ProductFruit");
+
+                    b.HasDiscriminator().HasValue("ProductFruit");
+                });
+
+            modelBuilder.Entity("Godsend.Models.ProductTV", b =>
+                {
+                    b.HasBaseType("Godsend.Models.Product");
+
+
+                    b.ToTable("ProductTV");
+
+                    b.HasDiscriminator().HasValue("ProductTV");
+                });
+
             modelBuilder.Entity("Godsend.Models.SimpleProduct", b =>
                 {
                     b.HasBaseType("Godsend.Models.Product");

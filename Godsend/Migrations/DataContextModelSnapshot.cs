@@ -255,6 +255,8 @@ namespace Godsend.Migrations
 
                     b.Property<Guid?>("ImagePathsId");
 
+                    b.Property<Guid?>("ProductId");
+
                     b.Property<string>("Value");
 
                     b.HasKey("Id");
@@ -262,6 +264,8 @@ namespace Godsend.Migrations
                     b.HasIndex("ArticleInformationId");
 
                     b.HasIndex("ImagePathsId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("StringWrapper");
                 });
@@ -635,6 +639,10 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.ImagePaths")
                         .WithMany("Images")
                         .HasForeignKey("ImagePathsId");
+
+                    b.HasOne("Godsend.Models.Product")
+                        .WithMany("CharacteristicsList")
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("Godsend.Models.Supplier", b =>

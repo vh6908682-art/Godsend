@@ -35,6 +35,8 @@ namespace Godsend.Migrations
 
                     b.Property<Guid?>("InfoId");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EntityInformationId");
@@ -44,6 +46,22 @@ namespace Godsend.Migrations
                     b.ToTable("Articles");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Article");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("BaseCategoryId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseCategoryId");
+
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Godsend.Models.Cell", b =>
@@ -228,6 +246,8 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid?>("CategoryId");
+
                     b.Property<string>("Discriminator")
                         .IsRequired();
 
@@ -235,7 +255,11 @@ namespace Godsend.Migrations
 
                     b.Property<Guid?>("InfoId");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("EntityInformationId");
 
@@ -255,8 +279,6 @@ namespace Godsend.Migrations
 
                     b.Property<Guid?>("ImagePathsId");
 
-                    b.Property<Guid?>("ProductId");
-
                     b.Property<string>("Value");
 
                     b.HasKey("Id");
@@ -264,8 +286,6 @@ namespace Godsend.Migrations
                     b.HasIndex("ArticleInformationId");
 
                     b.HasIndex("ImagePathsId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("StringWrapper");
                 });
@@ -281,6 +301,8 @@ namespace Godsend.Migrations
                     b.Property<Guid?>("EntityInformationId");
 
                     b.Property<Guid?>("InfoId");
+
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -573,6 +595,13 @@ namespace Godsend.Migrations
                         .HasForeignKey("InfoId");
                 });
 
+            modelBuilder.Entity("Godsend.Models.Category", b =>
+                {
+                    b.HasOne("Godsend.Models.Category", "BaseCategory")
+                        .WithMany()
+                        .HasForeignKey("BaseCategoryId");
+                });
+
             modelBuilder.Entity("Godsend.Models.Cell", b =>
                 {
                     b.HasOne("Godsend.Models.Column", "BaseColumn")
@@ -641,6 +670,10 @@ namespace Godsend.Migrations
 
             modelBuilder.Entity("Godsend.Models.Product", b =>
                 {
+                    b.HasOne("Godsend.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("Godsend.Models.Information", "EntityInformation")
                         .WithMany()
                         .HasForeignKey("EntityInformationId");
@@ -659,10 +692,6 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.ImagePaths")
                         .WithMany("Images")
                         .HasForeignKey("ImagePathsId");
-
-                    b.HasOne("Godsend.Models.Product")
-                        .WithMany("CharacteristicsList")
-                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("Godsend.Models.Supplier", b =>

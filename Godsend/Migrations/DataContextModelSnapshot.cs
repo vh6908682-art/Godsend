@@ -61,7 +61,7 @@ namespace Godsend.Migrations
 
                     b.HasIndex("BaseCategoryId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Godsend.Models.Cell", b =>
@@ -123,6 +123,26 @@ namespace Godsend.Migrations
                     b.HasIndex("BaseId");
 
                     b.ToTable("Directory");
+                });
+
+            modelBuilder.Entity("Godsend.Models.EAV", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("ProductId");
+
+                    b.Property<Guid?>("PropertyId");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("LinkProductProperty");
                 });
 
             modelBuilder.Entity("Godsend.Models.ImagePaths", b =>
@@ -268,6 +288,22 @@ namespace Godsend.Migrations
                     b.ToTable("Products");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Property", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<Guid?>("RelatedCategoryId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RelatedCategoryId");
+
+                    b.ToTable("Properties");
                 });
 
             modelBuilder.Entity("Godsend.Models.StringWrapper", b =>
@@ -631,6 +667,17 @@ namespace Godsend.Migrations
                         .HasForeignKey("BaseId");
                 });
 
+            modelBuilder.Entity("Godsend.Models.EAV", b =>
+                {
+                    b.HasOne("Godsend.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Godsend.Models.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId");
+                });
+
             modelBuilder.Entity("Godsend.Models.LinkProductsSuppliers", b =>
                 {
                     b.HasOne("Godsend.Models.Product", "Product")
@@ -681,6 +728,13 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.ProductInformation", "Info")
                         .WithMany()
                         .HasForeignKey("InfoId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Property", b =>
+                {
+                    b.HasOne("Godsend.Models.Category", "RelatedCategory")
+                        .WithMany()
+                        .HasForeignKey("RelatedCategoryId");
                 });
 
             modelBuilder.Entity("Godsend.Models.StringWrapper", b =>

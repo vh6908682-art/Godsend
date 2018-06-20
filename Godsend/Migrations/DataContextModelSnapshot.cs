@@ -125,7 +125,47 @@ namespace Godsend.Migrations
                     b.ToTable("Directory");
                 });
 
-            modelBuilder.Entity("Godsend.Models.EAV", b =>
+            modelBuilder.Entity("Godsend.Models.EAV<decimal>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("ProductId");
+
+                    b.Property<Guid?>("PropertyId");
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("LinkProductPropertyDecimal");
+                });
+
+            modelBuilder.Entity("Godsend.Models.EAV<int>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("ProductId");
+
+                    b.Property<Guid?>("PropertyId");
+
+                    b.Property<int>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("LinkProductPropertyInt");
+                });
+
+            modelBuilder.Entity("Godsend.Models.EAV<string>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -142,7 +182,7 @@ namespace Godsend.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("LinkProductProperty");
+                    b.ToTable("LinkProductPropertyString");
                 });
 
             modelBuilder.Entity("Godsend.Models.ImagePaths", b =>
@@ -293,6 +333,8 @@ namespace Godsend.Migrations
                     b.Property<string>("Name");
 
                     b.Property<Guid?>("RelatedCategoryId");
+
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 
@@ -617,7 +659,29 @@ namespace Godsend.Migrations
                         .HasForeignKey("BaseId");
                 });
 
-            modelBuilder.Entity("Godsend.Models.EAV", b =>
+            modelBuilder.Entity("Godsend.Models.EAV<decimal>", b =>
+                {
+                    b.HasOne("Godsend.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Godsend.Models.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.EAV<int>", b =>
+                {
+                    b.HasOne("Godsend.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Godsend.Models.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.EAV<string>", b =>
                 {
                     b.HasOne("Godsend.Models.Product", "Product")
                         .WithMany()

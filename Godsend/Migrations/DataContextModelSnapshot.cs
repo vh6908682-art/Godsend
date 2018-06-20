@@ -268,9 +268,6 @@ namespace Godsend.Migrations
 
                     b.Property<Guid?>("CategoryId");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<Guid?>("EntityInformationId");
 
                     b.Property<Guid?>("InfoId");
@@ -286,8 +283,6 @@ namespace Godsend.Migrations
                     b.HasIndex("InfoId");
 
                     b.ToTable("Products");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Product");
                 });
 
             modelBuilder.Entity("Godsend.Models.Property", b =>
@@ -331,9 +326,6 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
                     b.Property<Guid?>("EntityInformationId");
 
                     b.Property<Guid?>("InfoId");
@@ -347,8 +339,6 @@ namespace Godsend.Migrations
                     b.HasIndex("InfoId");
 
                     b.ToTable("Suppliers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Supplier");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -578,46 +568,6 @@ namespace Godsend.Migrations
                     b.ToTable("SimpleOrder");
 
                     b.HasDiscriminator().HasValue("SimpleOrder");
-                });
-
-            modelBuilder.Entity("Godsend.Models.ProductFruit", b =>
-                {
-                    b.HasBaseType("Godsend.Models.Product");
-
-
-                    b.ToTable("ProductFruit");
-
-                    b.HasDiscriminator().HasValue("ProductFruit");
-                });
-
-            modelBuilder.Entity("Godsend.Models.ProductTV", b =>
-                {
-                    b.HasBaseType("Godsend.Models.Product");
-
-
-                    b.ToTable("ProductTV");
-
-                    b.HasDiscriminator().HasValue("ProductTV");
-                });
-
-            modelBuilder.Entity("Godsend.Models.SimpleProduct", b =>
-                {
-                    b.HasBaseType("Godsend.Models.Product");
-
-
-                    b.ToTable("SimpleProduct");
-
-                    b.HasDiscriminator().HasValue("SimpleProduct");
-                });
-
-            modelBuilder.Entity("Godsend.Models.SimpleSupplier", b =>
-                {
-                    b.HasBaseType("Godsend.Models.Supplier");
-
-
-                    b.ToTable("SimpleSupplier");
-
-                    b.HasDiscriminator().HasValue("SimpleSupplier");
                 });
 
             modelBuilder.Entity("Godsend.Models.Article", b =>

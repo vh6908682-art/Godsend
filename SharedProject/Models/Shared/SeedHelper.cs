@@ -11,11 +11,17 @@ namespace Godsend.Models
     using System.Text;
     using Microsoft.EntityFrameworkCore;
 
-    internal static class SeedHelper
+    public interface ISeedHelper
+    {
+        void EnsurePopulated(DataContext context);
+    }
+
+
+    internal class SeedHelper : ISeedHelper
     {
         private static object creationLock = new object();
 
-        internal static void EnsurePopulated(DataContext context)
+        public void EnsurePopulated(DataContext context)
         {
             lock (creationLock)
             {

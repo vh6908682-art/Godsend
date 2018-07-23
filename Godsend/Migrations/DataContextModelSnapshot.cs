@@ -590,6 +590,8 @@ namespace Godsend.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int>("State");
+
                     b.ToTable("ProductInformation");
 
                     b.HasDiscriminator().HasValue("ProductInformation");

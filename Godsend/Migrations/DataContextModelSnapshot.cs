@@ -575,6 +575,8 @@ namespace Godsend.Migrations
 
                     b.Property<DateTime>("Created");
 
+                    b.Property<string>("Description");
+
                     b.Property<string>("EFAuthorId");
 
                     b.HasIndex("EFAuthorId");
@@ -588,7 +590,8 @@ namespace Godsend.Migrations
                 {
                     b.HasBaseType("Godsend.Models.Information");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnName("ProductInformation_Description");
 
                     b.Property<int>("State");
 

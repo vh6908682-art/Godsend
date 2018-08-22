@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-
-namespace Godsend.Models
+﻿namespace Godsend.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Text;
+    using Newtonsoft.Json;
+
     public class LinkRatingEntity
     {
         public Guid Id { get; set; }

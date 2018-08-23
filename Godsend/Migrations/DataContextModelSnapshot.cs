@@ -196,7 +196,7 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("ArticleId");
+                    b.Property<Guid>("EntityId");
 
                     b.Property<int>("Rating");
 
@@ -204,7 +204,7 @@ namespace Godsend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArticleId");
+                    b.HasIndex("EntityId");
 
                     b.HasIndex("UserId");
 
@@ -216,7 +216,7 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("ProductId");
+                    b.Property<Guid>("EntityId");
 
                     b.Property<int>("Rating");
 
@@ -224,7 +224,7 @@ namespace Godsend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("EntityId");
 
                     b.HasIndex("UserId");
 
@@ -236,15 +236,15 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Rating");
+                    b.Property<Guid>("EntityId");
 
-                    b.Property<Guid>("SupplierId");
+                    b.Property<int>("Rating");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("EntityId");
 
                     b.HasIndex("UserId");
 
@@ -717,9 +717,9 @@ namespace Godsend.Migrations
 
             modelBuilder.Entity("Godsend.Models.LinkRatingArticle", b =>
                 {
-                    b.HasOne("Godsend.Models.Article", "Article")
+                    b.HasOne("Godsend.Models.Article", "Entity")
                         .WithMany()
-                        .HasForeignKey("ArticleId")
+                        .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Godsend.Models.User", "User")
@@ -729,9 +729,9 @@ namespace Godsend.Migrations
 
             modelBuilder.Entity("Godsend.Models.LinkRatingProduct", b =>
                 {
-                    b.HasOne("Godsend.Models.Product", "Product")
+                    b.HasOne("Godsend.Models.Product", "Entity")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Godsend.Models.User", "User")
@@ -741,9 +741,9 @@ namespace Godsend.Migrations
 
             modelBuilder.Entity("Godsend.Models.LinkRatingSupplier", b =>
                 {
-                    b.HasOne("Godsend.Models.Supplier", "Supplier")
+                    b.HasOne("Godsend.Models.Supplier", "Entity")
                         .WithMany()
-                        .HasForeignKey("SupplierId")
+                        .HasForeignKey("EntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Godsend.Models.User", "User")

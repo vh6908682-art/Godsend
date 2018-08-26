@@ -654,8 +654,9 @@ namespace Godsend.Migrations
             modelBuilder.Entity("Godsend.Models.EAV<decimal>", b =>
                 {
                     b.HasOne("Godsend.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
+                        .WithMany("DecimalProps")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Godsend.Models.Property", "Property")
                         .WithMany()
@@ -665,8 +666,9 @@ namespace Godsend.Migrations
             modelBuilder.Entity("Godsend.Models.EAV<int>", b =>
                 {
                     b.HasOne("Godsend.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
+                        .WithMany("IntProps")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Godsend.Models.Property", "Property")
                         .WithMany()
@@ -676,8 +678,9 @@ namespace Godsend.Migrations
             modelBuilder.Entity("Godsend.Models.EAV<string>", b =>
                 {
                     b.HasOne("Godsend.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
+                        .WithMany("StringProps")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Godsend.Models.Property", "Property")
                         .WithMany()
@@ -687,8 +690,9 @@ namespace Godsend.Migrations
             modelBuilder.Entity("Godsend.Models.LinkCommentEntity", b =>
                 {
                     b.HasOne("Godsend.Models.LinkCommentEntity", "BaseComment")
-                        .WithMany()
-                        .HasForeignKey("BaseCommentId");
+                        .WithMany("ChildComments")
+                        .HasForeignKey("BaseCommentId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Godsend.Models.User", "User")
                         .WithMany()

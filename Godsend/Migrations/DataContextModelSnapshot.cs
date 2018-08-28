@@ -77,9 +77,9 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("ProductId");
+                    b.Property<Guid>("ProductId");
 
-                    b.Property<Guid?>("PropertyId");
+                    b.Property<Guid>("PropertyId");
 
                     b.Property<decimal>("Value");
 
@@ -97,9 +97,9 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("ProductId");
+                    b.Property<Guid>("ProductId");
 
-                    b.Property<Guid?>("PropertyId");
+                    b.Property<Guid>("PropertyId");
 
                     b.Property<int>("Value");
 
@@ -117,9 +117,9 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("ProductId");
+                    b.Property<Guid>("ProductId");
 
-                    b.Property<Guid?>("PropertyId");
+                    b.Property<Guid>("PropertyId");
 
                     b.Property<string>("Value");
 
@@ -317,7 +317,7 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("CategoryId");
+                    b.Property<Guid>("CategoryId");
 
                     b.HasKey("Id");
 
@@ -660,7 +660,8 @@ namespace Godsend.Migrations
 
                     b.HasOne("Godsend.Models.Property", "Property")
                         .WithMany()
-                        .HasForeignKey("PropertyId");
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Godsend.Models.EAV<int>", b =>
@@ -672,7 +673,8 @@ namespace Godsend.Migrations
 
                     b.HasOne("Godsend.Models.Property", "Property")
                         .WithMany()
-                        .HasForeignKey("PropertyId");
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Godsend.Models.EAV<string>", b =>
@@ -684,7 +686,8 @@ namespace Godsend.Migrations
 
                     b.HasOne("Godsend.Models.Property", "Property")
                         .WithMany()
-                        .HasForeignKey("PropertyId");
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Godsend.Models.LinkCommentEntity", b =>
@@ -776,7 +779,8 @@ namespace Godsend.Migrations
                 {
                     b.HasOne("Godsend.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Godsend.Models.ProductInformation", b =>

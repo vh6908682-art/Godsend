@@ -81,7 +81,8 @@ namespace Godsend.Migrations
 
                     b.Property<Guid>("PropertyId");
 
-                    b.Property<decimal>("Value");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -174,7 +175,8 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("Price");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("ProductId");
 
@@ -705,12 +707,12 @@ namespace Godsend.Migrations
             modelBuilder.Entity("Godsend.Models.LinkProductsSuppliers", b =>
                 {
                     b.HasOne("Godsend.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("LinkProductsSuppliers")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Godsend.Models.Supplier", "Supplier")
-                        .WithMany()
+                        .WithMany("LinkProductsSuppliers")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -764,12 +766,12 @@ namespace Godsend.Migrations
                         .WithMany("Items")
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("Godsend.Models.Product", "Product")
+                    b.HasOne("Godsend.Models.ProductInformation", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Godsend.Models.Supplier", "Supplier")
+                    b.HasOne("Godsend.Models.SupplierInformation", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -145,6 +145,24 @@ namespace Godsend.Migrations
                     b.ToTable("ImagePathsTable");
                 });
 
+            modelBuilder.Entity("Godsend.Models.LinkArticleTag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("ArticleInfoId");
+
+                    b.Property<Guid>("TagId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleInfoId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("LinkArticleTags");
+                });
+
             modelBuilder.Entity("Godsend.Models.LinkCommentEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -396,15 +414,11 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("ArticleInformationId");
-
                     b.Property<Guid?>("ImagePathsId");
 
                     b.Property<string>("Value");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ArticleInformationId");
 
                     b.HasIndex("ImagePathsId");
 
@@ -440,6 +454,22 @@ namespace Godsend.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("Godsend.Models.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Value")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Value")
+                        .IsUnique();
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Godsend.Models.User", b =>
@@ -692,6 +722,19 @@ namespace Godsend.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Godsend.Models.LinkArticleTag", b =>
+                {
+                    b.HasOne("Godsend.Models.ArticleInformation", "ArticleInfo")
+                        .WithMany("EFTags")
+                        .HasForeignKey("ArticleInfoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Godsend.Models.Tag", "Tag")
+                        .WithMany("LinkArticleTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Godsend.Models.LinkCommentEntity", b =>
                 {
                     b.HasOne("Godsend.Models.LinkCommentEntity", "BaseComment")
@@ -802,10 +845,6 @@ namespace Godsend.Migrations
 
             modelBuilder.Entity("Godsend.Models.StringWrapper", b =>
                 {
-                    b.HasOne("Godsend.Models.ArticleInformation")
-                        .WithMany("EFTags")
-                        .HasForeignKey("ArticleInformationId");
-
                     b.HasOne("Godsend.Models.ImagePaths")
                         .WithMany("Images")
                         .HasForeignKey("ImagePathsId");

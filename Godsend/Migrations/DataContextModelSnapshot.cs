@@ -133,6 +133,24 @@ namespace Godsend.Migrations
                     b.ToTable("LinkProductPropertyString");
                 });
 
+            modelBuilder.Entity("Godsend.Models.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("ImagePathsId");
+
+                    b.Property<string>("Path");
+
+                    b.Property<string>("Thumb");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImagePathsId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("Godsend.Models.ImagePaths", b =>
                 {
                     b.Property<Guid>("Id")
@@ -407,22 +425,6 @@ namespace Godsend.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-                });
-
-            modelBuilder.Entity("Godsend.Models.StringWrapper", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("ImagePathsId");
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ImagePathsId");
-
-                    b.ToTable("StringWrapper");
                 });
 
             modelBuilder.Entity("Godsend.Models.Supplier", b =>
@@ -722,6 +724,14 @@ namespace Godsend.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Godsend.Models.Image", b =>
+                {
+                    b.HasOne("Godsend.Models.ImagePaths", "ImagePaths")
+                        .WithMany("Images")
+                        .HasForeignKey("ImagePathsId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Godsend.Models.LinkArticleTag", b =>
                 {
                     b.HasOne("Godsend.Models.ArticleInformation", "ArticleInfo")
@@ -841,13 +851,6 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.Category", "RelatedCategory")
                         .WithMany()
                         .HasForeignKey("RelatedCategoryId");
-                });
-
-            modelBuilder.Entity("Godsend.Models.StringWrapper", b =>
-                {
-                    b.HasOne("Godsend.Models.ImagePaths")
-                        .WithMany("Images")
-                        .HasForeignKey("ImagePathsId");
                 });
 
             modelBuilder.Entity("Godsend.Models.SupplierInformation", b =>

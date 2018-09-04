@@ -138,29 +138,21 @@ namespace Godsend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("ImagePathsId");
-
                     b.Property<string>("Path");
+
+                    b.Property<Guid?>("ProductId");
+
+                    b.Property<Guid?>("SupplierId");
 
                     b.Property<string>("Thumb");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImagePathsId");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("Godsend.Models.ImagePaths", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Preview");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ImagePathsTable");
                 });
 
             modelBuilder.Entity("Godsend.Models.LinkArticleTag", b =>
@@ -374,6 +366,8 @@ namespace Godsend.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<Guid?>("PreviewId");
+
                     b.Property<double>("Rating");
 
                     b.Property<int>("State");
@@ -381,6 +375,8 @@ namespace Godsend.Migrations
                     b.Property<int>("Watches");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PreviewId");
 
                     b.ToTable("Products");
                 });
@@ -447,6 +443,8 @@ namespace Godsend.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<Guid?>("PreviewId");
+
                     b.Property<double>("Rating");
 
                     b.Property<int>("Watches");
@@ -454,6 +452,8 @@ namespace Godsend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
+
+                    b.HasIndex("PreviewId");
 
                     b.ToTable("Suppliers");
                 });
@@ -726,10 +726,13 @@ namespace Godsend.Migrations
 
             modelBuilder.Entity("Godsend.Models.Image", b =>
                 {
-                    b.HasOne("Godsend.Models.ImagePaths", "ImagePaths")
+                    b.HasOne("Godsend.Models.Product")
                         .WithMany("Images")
-                        .HasForeignKey("ImagePathsId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Godsend.Models.Supplier")
+                        .WithMany("Images")
+                        .HasForeignKey("SupplierId");
                 });
 
             modelBuilder.Entity("Godsend.Models.LinkArticleTag", b =>
@@ -844,6 +847,10 @@ namespace Godsend.Migrations
                         .WithOne("Info")
                         .HasForeignKey("Godsend.Models.ProductInformation", "Id")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Godsend.Models.Image", "Preview")
+                        .WithMany()
+                        .HasForeignKey("PreviewId");
                 });
 
             modelBuilder.Entity("Godsend.Models.Property", b =>
@@ -863,6 +870,10 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId");
+
+                    b.HasOne("Godsend.Models.Image", "Preview")
+                        .WithMany()
+                        .HasForeignKey("PreviewId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -140,17 +140,9 @@ namespace Godsend.Migrations
 
                     b.Property<string>("Path");
 
-                    b.Property<Guid?>("ProductId");
-
-                    b.Property<Guid?>("SupplierId");
-
                     b.Property<string>("Thumb");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("SupplierId");
 
                     b.ToTable("Images");
                 });
@@ -196,6 +188,24 @@ namespace Godsend.Migrations
                     b.ToTable("LinkCommentEntity");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("LinkCommentEntity");
+                });
+
+            modelBuilder.Entity("Godsend.Models.LinkProductImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("ImageId");
+
+                    b.Property<Guid>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("LinkProductImages");
                 });
 
             modelBuilder.Entity("Godsend.Models.LinkProductsSuppliers", b =>
@@ -277,6 +287,24 @@ namespace Godsend.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("LinkRatingSupplier");
+                });
+
+            modelBuilder.Entity("Godsend.Models.LinkSupplierImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("ImageId");
+
+                    b.Property<Guid>("SupplierId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("LinkSupplierImages");
                 });
 
             modelBuilder.Entity("Godsend.Models.Location", b =>
@@ -724,17 +752,6 @@ namespace Godsend.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Godsend.Models.Image", b =>
-                {
-                    b.HasOne("Godsend.Models.Product")
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("Godsend.Models.Supplier")
-                        .WithMany("Images")
-                        .HasForeignKey("SupplierId");
-                });
-
             modelBuilder.Entity("Godsend.Models.LinkArticleTag", b =>
                 {
                     b.HasOne("Godsend.Models.ArticleInformation", "ArticleInfo")
@@ -758,6 +775,19 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.LinkProductImage", b =>
+                {
+                    b.HasOne("Godsend.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Godsend.Models.Product", "Product")
+                        .WithMany("LinkProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Godsend.Models.LinkProductsSuppliers", b =>
@@ -807,6 +837,19 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.LinkSupplierImage", b =>
+                {
+                    b.HasOne("Godsend.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Godsend.Models.Supplier", "Supplier")
+                        .WithMany("LinkSupplierImages")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Godsend.Models.Order", b =>

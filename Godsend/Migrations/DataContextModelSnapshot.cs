@@ -229,7 +229,7 @@ namespace Godsend.Migrations
                     b.ToTable("LinkProductsSuppliers");
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkRatingArticle", b =>
+            modelBuilder.Entity("Godsend.Models.LinkRatingEntity<Godsend.Models.Article>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -249,7 +249,7 @@ namespace Godsend.Migrations
                     b.ToTable("LinkRatingArticle");
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkRatingProduct", b =>
+            modelBuilder.Entity("Godsend.Models.LinkRatingEntity<Godsend.Models.Product>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -269,7 +269,7 @@ namespace Godsend.Migrations
                     b.ToTable("LinkRatingProduct");
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkRatingSupplier", b =>
+            modelBuilder.Entity("Godsend.Models.LinkRatingEntity<Godsend.Models.Supplier>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -518,6 +518,8 @@ namespace Godsend.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<long?>("FacebookId");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -803,7 +805,7 @@ namespace Godsend.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkRatingArticle", b =>
+            modelBuilder.Entity("Godsend.Models.LinkRatingEntity<Godsend.Models.Article>", b =>
                 {
                     b.HasOne("Godsend.Models.Article", "Entity")
                         .WithMany()
@@ -815,7 +817,7 @@ namespace Godsend.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkRatingProduct", b =>
+            modelBuilder.Entity("Godsend.Models.LinkRatingEntity<Godsend.Models.Product>", b =>
                 {
                     b.HasOne("Godsend.Models.Product", "Entity")
                         .WithMany()
@@ -827,7 +829,7 @@ namespace Godsend.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkRatingSupplier", b =>
+            modelBuilder.Entity("Godsend.Models.LinkRatingEntity<Godsend.Models.Supplier>", b =>
                 {
                     b.HasOne("Godsend.Models.Supplier", "Entity")
                         .WithMany()

@@ -165,7 +165,7 @@ namespace Godsend.Migrations
                     b.ToTable("LinkArticleTags");
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkCommentEntity", b =>
+            modelBuilder.Entity("Godsend.Models.LinkCommentEntity<Godsend.Models.Article>", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -174,8 +174,7 @@ namespace Godsend.Migrations
 
                     b.Property<string>("Comment");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
+                    b.Property<Guid?>("EntityId1");
 
                     b.Property<string>("UserId");
 
@@ -183,11 +182,59 @@ namespace Godsend.Migrations
 
                     b.HasIndex("BaseCommentId");
 
+                    b.HasIndex("EntityId1");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("LinkCommentEntity");
+                    b.ToTable("LinkCommentArticle");
+                });
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("LinkCommentEntity");
+            modelBuilder.Entity("Godsend.Models.LinkCommentEntity<Godsend.Models.Product>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("BaseCommentId");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<Guid?>("EntityId1");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseCommentId");
+
+                    b.HasIndex("EntityId1");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LinkCommentProduct");
+                });
+
+            modelBuilder.Entity("Godsend.Models.LinkCommentEntity<Godsend.Models.Supplier>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("BaseCommentId");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<Guid?>("EntityId1");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BaseCommentId");
+
+                    b.HasIndex("EntityId1");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LinkCommentSupplier");
                 });
 
             modelBuilder.Entity("Godsend.Models.LinkProductImage", b =>
@@ -647,45 +694,6 @@ namespace Godsend.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkCommentArticle", b =>
-                {
-                    b.HasBaseType("Godsend.Models.LinkCommentEntity");
-
-                    b.Property<Guid>("ArticleId");
-
-                    b.HasIndex("ArticleId");
-
-                    b.ToTable("LinkCommentArticle");
-
-                    b.HasDiscriminator().HasValue("LinkCommentArticle");
-                });
-
-            modelBuilder.Entity("Godsend.Models.LinkCommentProduct", b =>
-                {
-                    b.HasBaseType("Godsend.Models.LinkCommentEntity");
-
-                    b.Property<Guid>("ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("LinkCommentProduct");
-
-                    b.HasDiscriminator().HasValue("LinkCommentProduct");
-                });
-
-            modelBuilder.Entity("Godsend.Models.LinkCommentSupplier", b =>
-                {
-                    b.HasBaseType("Godsend.Models.LinkCommentEntity");
-
-                    b.Property<Guid>("SupplierId");
-
-                    b.HasIndex("SupplierId");
-
-                    b.ToTable("LinkCommentSupplier");
-
-                    b.HasDiscriminator().HasValue("LinkCommentSupplier");
-                });
-
             modelBuilder.Entity("Godsend.Models.SimpleOrder", b =>
                 {
                     b.HasBaseType("Godsend.Models.Order");
@@ -767,12 +775,45 @@ namespace Godsend.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Godsend.Models.LinkCommentEntity", b =>
+            modelBuilder.Entity("Godsend.Models.LinkCommentEntity<Godsend.Models.Article>", b =>
                 {
-                    b.HasOne("Godsend.Models.LinkCommentEntity", "BaseComment")
+                    b.HasOne("Godsend.Models.LinkCommentEntity<Godsend.Models.Article>", "BaseComment")
                         .WithMany("ChildComments")
-                        .HasForeignKey("BaseCommentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("BaseCommentId");
+
+                    b.HasOne("Godsend.Models.Article", "Entity")
+                        .WithMany()
+                        .HasForeignKey("EntityId1");
+
+                    b.HasOne("Godsend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.LinkCommentEntity<Godsend.Models.Product>", b =>
+                {
+                    b.HasOne("Godsend.Models.LinkCommentEntity<Godsend.Models.Product>", "BaseComment")
+                        .WithMany("ChildComments")
+                        .HasForeignKey("BaseCommentId");
+
+                    b.HasOne("Godsend.Models.Product", "Entity")
+                        .WithMany()
+                        .HasForeignKey("EntityId1");
+
+                    b.HasOne("Godsend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Godsend.Models.LinkCommentEntity<Godsend.Models.Supplier>", b =>
+                {
+                    b.HasOne("Godsend.Models.LinkCommentEntity<Godsend.Models.Supplier>", "BaseComment")
+                        .WithMany("ChildComments")
+                        .HasForeignKey("BaseCommentId");
+
+                    b.HasOne("Godsend.Models.Supplier", "Entity")
+                        .WithMany()
+                        .HasForeignKey("EntityId1");
 
                     b.HasOne("Godsend.Models.User", "User")
                         .WithMany()
@@ -963,30 +1004,6 @@ namespace Godsend.Migrations
                     b.HasOne("Godsend.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Godsend.Models.LinkCommentArticle", b =>
-                {
-                    b.HasOne("Godsend.Models.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Godsend.Models.LinkCommentProduct", b =>
-                {
-                    b.HasOne("Godsend.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Godsend.Models.LinkCommentSupplier", b =>
-                {
-                    b.HasOne("Godsend.Models.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

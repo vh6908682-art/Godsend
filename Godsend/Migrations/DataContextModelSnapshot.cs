@@ -361,6 +361,10 @@ namespace Godsend.Migrations
 
                     b.Property<string>("Address");
 
+                    b.Property<float>("Latitude");
+
+                    b.Property<float>("Longtitude");
+
                     b.HasKey("Id");
 
                     b.ToTable("Location");
